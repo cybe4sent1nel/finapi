@@ -113,6 +113,32 @@ For authenticated operations in the playground, set headers like this:
 }
 ```
 
+Use the exact `token` value returned by the `login` mutation.
+
+Example header value:
+
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+Important:
+
+- Put GraphQL query/mutation text in the left query editor.
+- Put JSON headers only in the Headers panel.
+- If you paste `{ "Authorization": ... }` in the query editor, you will get: `Syntax Error: Expected Name, found String "Authorization"`.
+
+### Recommended Run Order (so everything succeeds)
+
+1. Run `LoginFahad` and copy token.
+2. Set header `Authorization: Bearer <token>` in headers panel.
+3. Run read queries: `Me`, `Users`, `Records`, `DashboardSummary`.
+4. Run `CreateRecord` and copy returned `id`.
+5. Use that new `id` in `UpdateRecord` and `DeleteRecord`.
+6. Run `CreateUser` with a fresh email if you run it multiple times.
+7. Use returned user `id` for `UpdateUser` and `SetUserStatus`.
+
 ### 1) Login (Fahad Admin)
 
 ```graphql
@@ -270,7 +296,7 @@ mutation CreateUser {
   createUser(
     input: {
       name: "Playground Analyst"
-      email: "playground.analyst@demo.local"
+      email: "playground.analyst.001@demo.local"
       password: "Analyst@123"
       role: ANALYST
       status: ACTIVE
@@ -286,6 +312,8 @@ mutation CreateUser {
 ```
 
 ### 11) Update user (Admin only)
+
+Replace `id` with the user id returned by `CreateUser`.
 
 ```graphql
 mutation UpdateUser {
@@ -305,6 +333,8 @@ mutation UpdateUser {
 ```
 
 ### 12) Set user status (Admin only)
+
+Replace `id` with the user id returned by `CreateUser`.
 
 ```graphql
 mutation SetUserStatus {
@@ -341,6 +371,8 @@ mutation CreateRecord {
 
 ### 14) Update record (Admin only)
 
+Replace `id` with the record id returned by `CreateRecord`.
+
 ```graphql
 mutation UpdateRecord {
   updateRecord(
@@ -358,6 +390,8 @@ mutation UpdateRecord {
 ```
 
 ### 15) Delete record (Admin only, soft delete)
+
+Replace `id` with the record id returned by `CreateRecord`.
 
 ```graphql
 mutation DeleteRecord {
@@ -386,6 +420,25 @@ mutation ViewerBlocked {
 ```
 
 Expected: GraphQL error code `FORBIDDEN`.
+
+## API Checklist (matches assignment requirements)
+
+Implemented operations:
+
+- Authentication:
+  - `login`
+- User and role management:
+  - `users`
+  - `createUser`
+  - `updateUser`
+  - `setUserStatus`
+- Financial records:
+  - `records` (filter by type/category/date + pagination)
+  - `createRecord`
+  - `updateRecord`
+  - `deleteRecord` (soft delete)
+- Dashboard analytics:
+  - `dashboardSummary` (income, expense, net, category totals, trends, recent activity)
 
 ## GraphQL API
 

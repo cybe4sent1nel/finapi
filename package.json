@@ -12,6 +12,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=20 <23"
+  },
   "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -23,7 +26,7 @@
     "jsonwebtoken": "^9.0.3",
     "ruru": "^2.0.0",
     "sqlite": "^5.1.1",
-    "sqlite3": "^6.0.1",
+    "sqlite3": "^5.1.7",
     "zod": "^4.3.6"
   },
   "devDependencies": {

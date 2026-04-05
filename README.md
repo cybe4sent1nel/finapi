@@ -543,6 +543,31 @@ tests/
 - Soft delete implemented for records, not users
 - Rate limiting and audit log streaming are natural next extensions
 
+## Render Deployment Notes
+
+If you deploy on Render, use:
+
+- Build command: `npm install`
+- Start command: `node src/server.js`
+
+Node runtime is restricted in `package.json` engines to avoid incompatible native binary issues.
+
+### Environment Variables on Render
+
+Set these in Render dashboard:
+
+- `PORT=4000` (Render may override internally)
+- `JWT_SECRET=<strong-random-secret>`
+- `JWT_EXPIRES_IN=1d`
+- `DB_FILE=./data/finance.db`
+
+### Better Log Workflow
+
+1. Use Render Dashboard -> Service -> Logs -> Live tail while reproducing the request.
+2. Filter logs by keywords like `Failed to start server`, `SQLITE`, `UNAUTHENTICATED`, `FORBIDDEN`.
+3. Add a health check monitor against `/health` to detect boot issues quickly.
+4. Keep one successful GraphQL smoke query (`query { __typename }`) for post-deploy validation.
+
 ## GitHub Setup And Push
 
 Use the exact commands below:
